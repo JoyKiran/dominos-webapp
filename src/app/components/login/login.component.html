@@ -1,16 +1,69 @@
-<div><a href="#">skip</a></div>
-<div><span>app_logo</span>Domino's</div>
-<div>Login to unlock awesome benefits</div>
-<div>
-  <div><span>%_logo</span>Personalized Offers</div>
-  <div><span>pizza_piece_logo</span>Loyalty Rewards</div>
-  <div><span>mobile_logo</span>Easy Payments</div>
-</div>
-<div>
-  <div>
-    <label>Mobile Number</label>
-    <input type="tel" [(ngModel)]="mobile" />
+<div *ngIf="!showOtpReader; else displayOtpReader">
+  <div role="mobile-reader">
+    <div class="skip">
+      <button type="button" (click)="skipLogin()">skip</button>
+    </div>
+    <div class="wrapper">
+      <div class="company"><span>app_logo</span>Domino's</div>
+      <div class="header">Login to unlock awesome benefits</div>
+    </div>
+    <div class="wrapper">
+      <div><span>%_logo</span>Personalized Offers</div>
+      <div><span>pizza_piece_logo</span>Loyalty Rewards</div>
+      <div><span>mobile_logo</span>Easy Payments</div>
+    </div>
+    <div class="wrapper">
+      <label>Mobile Number</label>
+      <input
+        type="tel"
+        name="phone"
+        pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+        [ngModel]="mobile"
+        (ngModelChange)="validateMobile($event)"
+        required
+      />
+    </div>
+    <div *ngIf="isLoading">{{ loadingMsg }}<span>loading icon</span></div>
   </div>
 </div>
-<div>By going forward you accept our <a href="#">Terms & Conditions</a></div>
-<button type="button" (click)="sendOtp()">Send OTP</button>
+<ng-template #displayOtpReader>
+  <div role="otp-reader">
+    <div class="back">
+      <button type="button" (click)="goBack()">back</button>
+    </div>
+    <div class="wrapper">
+      <div class="otp-header">OTP Verification</div>
+      <div class="info">
+        OTP has been sent to <span>{{ mobile }}</span>
+      </div>
+    </div>
+    <div class="wrapper">
+      <div class="otp">
+        <input type="number" maxlength="1" [(ngModel)]="otpChOne" />
+        <input type="number" maxlength="1" [(ngModel)]="otpChTwo" />
+        <input type="number" maxlength="1" [(ngModel)]="otpChThree" />
+        <input type="number" maxlength="1" [(ngModel)]="otpChFour" />
+        <input type="number" maxlength="1" [(ngModel)]="otpChFive" />
+        <input type="number" maxlength="1" [(ngModel)]="otpChSix" />
+      </div>
+      <div class="otp-footer">
+        <div>Enter your 6 digit OTP</div>
+        <!-- <div>Trying to autoread your OTP</div> -->
+        <div>
+          <button type="button" (click)="sendOtp()">Resend OTP</button>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="isLoading">{{ loadingMsg }}<span>loading icon</span></div>
+  </div>
+</ng-template>
+<div role="sender">
+  <div *ngIf="!showOtpReader">
+    By going forward you accept our <a href="#">Terms & Conditions</a>
+  </div>
+  <div>
+    <button type="button" (click)="submit()" [disabled]="!isBtnEnabled">
+      {{ btnName }}
+    </button>
+  </div>
+</div>
