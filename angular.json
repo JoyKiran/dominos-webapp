@@ -91,11 +91,6 @@
             ],
             "scripts": []
           }
-<<<<<<< HEAD
-        }
-      }
-    }
-=======
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
@@ -113,6 +108,5 @@
     "schematicCollections": [
       "@angular-eslint/schematics"
     ]
->>>>>>> develop
   }
 }
